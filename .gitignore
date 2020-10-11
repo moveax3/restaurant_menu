@@ -1,0 +1,6 @@
+prod.env
+postgres/pg_data/*
+postgres/backup/*
+django/static/*
+*.pyc
+.idea

@@ -1,0 +1,76 @@
+version: "3.8"
+
+services:
+  django:
+    build: ./django/
+    command: ["uwsgi", "--socket", "0.0.0.0:9000", "--buffer-size", "262144", "--module", "restaurant_menu.wsgi"]
+    container_name: restraunt_menu_django
+    depends_on:
+      - postgres
+    env_file: ./prod.env
+    networks:
+      - backend
+      - frontend
+    ports:
+      - "9000:9000"
+    restart: always
+    volumes:
+      - ./django/src:/app
+      - ./django/static/:/static
+      - ./django/media/:/media
+
+  nginx:
+    build: ./nginx/
+    container_name: restraunt_menu_nginx
+    depends_on:
+      - django
+    env_file: ./prod.env
+    networks:
+      - frontend
+    ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+    restart: always
+    volumes:
+      - ./nginx/templates:/etc/nginx/templates
+      - ./django/static/:/static
+      - ./django/media/:/media
+
+  postgres:
+    build: ./postgres/
+    container_name: restraunt_menu_postgres
+    env_file: ./prod.env
+    networks:
+      - backend
+    restart: always
+    volumes:
+      - ./postgres/pg_data:/var/lib/postgresql/data
+      - ./postgres/backup:/backup
+
+  celery:
+    build: ./django/
+    command: ["celery", "--app", "restaurant_menu", "worker", "--loglevel", "INFO"]
+    container_name: restraunt_menu_celery
+    depends_on:
+      - postgres
+      - redis
+    env_file: ./prod.env
+    networks:
+      - backend
+    restart: always
+    volumes:
+      - ./django/src:/app
+
+  redis:
+    image: redis:alpine
+    container_name: restraunt_menu_redis
+    env_file: ./prod.env
+    networks:
+      - backend
+    restart: always
+
+networks:
+  frontend:
+  backend:

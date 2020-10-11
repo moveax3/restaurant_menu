@@ -1,0 +1,9 @@
+celery
+django
+django-model-utils
+django-extensions
+djangorestframework
+markdown
+psycopg2-binary
+redis
+uwsgi
