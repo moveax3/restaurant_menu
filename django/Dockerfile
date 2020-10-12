@@ -2,6 +2,7 @@ FROM python:3.9-alpine
 RUN apk add build-base
 RUN apk add linux-headers
 RUN apk add postgresql-dev
+RUN apk add jpeg-dev zlib-dev
 COPY python-requirements.txt /
 RUN pip3 install -r /python-requirements.txt
 RUN mkdir /app
