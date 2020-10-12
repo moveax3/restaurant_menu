@@ -4,3 +4,4 @@ postgres/backup/*
 django/static/*
 *.pyc
 .idea
+.DS_Store
