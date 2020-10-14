@@ -19,7 +19,13 @@ django_collectstatic:
 django_check_migrations:
 	docker-compose exec django python3 manage.py makemigrations --dry-run
 
+django_make_migrations:
+	docker-compose exec django python3 manage.py makemigrations
+
 django_shell:
 	docker-compose exec django python3 manage.py shell_plus
+
+tests:
+	docker-compose exec django pytest
 
 django_prepare: django_migrate django_collectstatic
