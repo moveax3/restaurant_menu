@@ -2,6 +2,14 @@ Vue.use(BootstrapVue);
 
 const DishesMenuTemplate = `
 <div>
+    <b-button 
+        class="fixed-top pt-3 pb-3 submit-button" 
+        :href="pastebin_url()"
+        target="_blank"
+    >
+        Импортни нас на PasteBin!
+    </b-button>
+    <div class="pt-5 pb-5"></div>
     <h1>Меню:</h1>
     <div
     v-if="categoried_dishes"
@@ -36,6 +44,7 @@ const DishesMenuTemplate = `
     </div>
     <b-button class="fixed-bottom pt-3 pb-3 submit-button" :href="summary_url()">Отправить</b-button>
     <div class="pt-5 pb-5"></div>
+    
 </div>
 `;
 
@@ -60,7 +69,10 @@ app = new Vue({
         },
         summary_url: function () {
             return URLS.summary;
-        }
+        },
+        pastebin_url: function () {
+            return URLS.pastebin;
+        },
     },
     mounted: function () {
         var that = this;
