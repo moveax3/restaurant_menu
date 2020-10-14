@@ -28,10 +28,14 @@ def urls_context(request):
     :param request:
     :return:
     """
+    try:
+        pastebin_url = PastebinPaste.objects.latest('id')
+    except PastebinPaste.DoesNotExist:
+        pastebin_url = ''
     return {
         'URLS': {
             'summary': reverse('dishes:dishes_summary'),
             'menu': reverse('dishes:dishes_menu'),
-            'pastebin': PastebinPaste.objects.latest('id'),
+            'pastebin': pastebin_url,
         },
     }
