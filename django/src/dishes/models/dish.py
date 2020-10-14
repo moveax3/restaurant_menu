@@ -19,11 +19,7 @@ class Dish(TimeStampedModel):
         verbose_name="Цена",
     )
 
-    picture = models.ImageField(
-        null=False,
-        upload_to='dishes/',
-        verbose_name="Картинка",
-    )
+
 
     category = models.ForeignKey(
         Category,

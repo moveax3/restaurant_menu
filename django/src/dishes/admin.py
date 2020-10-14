@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from .models import (
     Dish,
+    DishPicture,
     NutritionalValue,
     Allergen,
     Category,
@@ -10,6 +11,10 @@ from .models import (
 
 class NutritionalValueInline(admin.StackedInline):
     model = NutritionalValue
+
+
+class DishPictureInline(admin.StackedInline):
+    model = DishPicture
 
 
 @admin.register(Allergen)
@@ -26,5 +31,6 @@ class CategoryAdmin(admin.ModelAdmin):
 class DishAdmin(admin.ModelAdmin):
     inlines = [
         NutritionalValueInline,
+        DishPictureInline,
     ]
 
