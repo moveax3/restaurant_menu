@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Меню ресторана</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Load required Bootstrap and BootstrapVue CSS -->
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+
+    <link type="text/css" rel="stylesheet" href="{% static 'css/root.css' %}"/>
+
+    <!-- Load polyfills to support older browsers -->
+    <script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver" crossorigin="anonymous"></script>
+
+    <!-- Load Vue followed by BootstrapVue -->
+    {% if DEBUG %}
+        <script src="//unpkg.com/vue@latest/dist/vue.js"></script>
+    {% else %}
+        <script src="//unpkg.com/vue@latest/dist/vue.min.js"></script>
+    {% endif %}
+    <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+    <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue-icons.min.js"></script>
+    <script src="//unpkg.com/vue-cookies@latest/vue-cookies.js"></script>
+
+    <script src="//unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <!--<header>
+        <h1 class="center-block text-center">Ресторан</h1>
+    </header>-->
+    <script type="text/javascript">
+        axios.defaults.headers.common['TOKEN'] = "{{ API_TOKEN }}";
+        var MEDIA_URL = "{{ MEDIA_URL }}";
+    </script>
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

@@ -1,1 +1,14 @@
-SUMMARY
+{% extends 'root.html' %}
+{% load static %}
+
+{% block content %}
+    <script type="text/javascript">
+        var API_URLS = {
+            dishes: "{{ API_URLS.dishes }}",
+        };
+    </script>
+
+    <div id="dishes_summary_app"></div>
+    <script type="text/javascript" src="{% static 'vue/apps/dishes_summary_app.js' %}"></script>
+
+{% endblock %}
