@@ -7,7 +7,7 @@ const DishesSummaryTemplate = `
         <div
         v-if="dishes"
         v-for="dish in dishes"
-        class="col-md-4"
+        class="col-md-4 pt-5"
         >
             <h4>{{ dish.name }}</h4>
             <p>Цена: {{ dish.price }} рублей</p>
@@ -16,7 +16,7 @@ const DishesSummaryTemplate = `
             <p>Углеводы: {{ dish.nutritional_value.carbohydrates }} на 100гр.</p>
             <p>Калории: {{ dish.nutritional_value.calories }} Кал.</p>
             <img
-                :src="dish.picture.picture"
+                :src="get_dish_picture_url(dish)"
                 class="mw-100 mh-300"
             />
         </div>
@@ -38,6 +38,16 @@ app = new Vue({
     },
     template: DishesSummaryTemplate,
     methods: {
+        /**
+         * Prepare dish picture url
+         */
+        get_dish_picture_url: function (dish) {
+            if (dish.picture) {
+                return dish.picture.picture;
+            } else {
+                return "https://www.python.org/static/community_logos/python-powered-h-50x65.png";
+            }
+        },
         /**
          * Calculate price of all checked dishes
          * @returns {number}
