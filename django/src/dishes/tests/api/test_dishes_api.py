@@ -48,9 +48,9 @@ def test_unauth_request(load_fixtures):
 
 @pytest.mark.django_db
 def test_get_dishes(load_fixtures):
-    client = Client(X_TOKEN=settings.DRF_STATIC_TOKEN)
+    client = Client()
     url = reverse('dishes:api:dishes')
-    response = client.get(url)
+    response = client.get(url, **{'HTTP_TOKEN': settings.DRF_STATIC_TOKEN})
     assert response.status_code == HTTP_200_OK
     data = json.loads(response.content)
     assert Dish.objects.all().count() == len(data)
@@ -72,9 +72,11 @@ def test_get_dishes(load_fixtures):
 
 @pytest.mark.django_db
 def test_create_dish(load_fixtures, dish_test_data):
-    client = Client(X_TOKEN=settings.DRF_STATIC_TOKEN)
+    client = Client()
     url = reverse('dishes:api:dishes')
-    response = client.post(url, data=dish_test_data, content_type='application/json')
+    response = client.post(
+        url, data=dish_test_data, content_type='application/json', **{'HTTP_TOKEN': settings.DRF_STATIC_TOKEN}
+    )
     assert response.status_code == HTTP_201_CREATED
     dish = Dish.objects.get(id=response.data.pop('id'))
     assert dish.name == dish_test_data['name']
@@ -88,9 +90,11 @@ def test_create_dish(load_fixtures, dish_test_data):
 
 @pytest.mark.django_db
 def test_upload_dish_picture(load_fixtures, dish_test_data):
-    client = Client(X_TOKEN=settings.DRF_STATIC_TOKEN)
+    client = Client()
     url = reverse('dishes:api:dishes')
-    response = client.post(url, data=dish_test_data, content_type='application/json')
+    response = client.post(
+        url, data=dish_test_data, content_type='application/json', **{'HTTP_TOKEN': settings.DRF_STATIC_TOKEN}
+    )
     dish_id = response.data.pop('id')
     url = reverse('dishes:api:dish_image')
     file_content = (
@@ -102,6 +106,8 @@ def test_upload_dish_picture(load_fixtures, dish_test_data):
         b'\x00\xBE\x0D\x21\x00\x00\x01\x9A\x60\xE1\xD5\x00\x00\x00\x00\x49\x45\x4E\x44\xAE\x42\x60\x82'
     )
     dish_picture = SimpleUploadedFile("file.jpg", file_content, content_type="image/png")
-    response = client.post(url, {'dish': dish_id, 'picture': dish_picture}, format='multipart')
+    response = client.post(
+        url, {'dish': dish_id, 'picture': dish_picture}, format='multipart', **{'HTTP_TOKEN': settings.DRF_STATIC_TOKEN}
+    )
     assert response.status_code == HTTP_201_CREATED
     assert Dish.objects.get(id=dish_id).picture.picture.read() == file_content

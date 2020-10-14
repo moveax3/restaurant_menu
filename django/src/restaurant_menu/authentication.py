@@ -7,7 +7,7 @@ from rest_framework.exceptions import AuthenticationFailed
 
 class StaticTokenAuthentication(BaseAuthentication):
     def authenticate(self, request):
-        token = request.META.get('X_TOKEN')
+        token = request.headers.get('TOKEN')
         if token and token == settings.DRF_STATIC_TOKEN:
             return (AnonymousUser(), None)
         raise AuthenticationFailed()
