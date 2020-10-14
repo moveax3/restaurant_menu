@@ -49,12 +49,22 @@ class DishesCreateSerializer(serializers.ModelSerializer):
     nutritional_value = NutritionalValueSerializer(required=True)
 
     def create(self, validated_data):
+        """
+        https://www.django-rest-framework.org/api-guide/serializers/#saving-instances
+        :param validated_data:
+        :return:
+        """
         nutritional_value = validated_data.pop('nutritional_value')
         dish = Dish.objects.create(**validated_data)
         NutritionalValue.objects.create(dish=dish, **nutritional_value)
         return dish
 
     def validate_category(self, value):
+        """
+        https://www.django-rest-framework.org/api-guide/serializers/#validation
+        :param value:
+        :return:
+        """
         try:
             category = Category.objects.get(id=int(value))
             return category
@@ -69,6 +79,11 @@ class DishesCreateSerializer(serializers.ModelSerializer):
 class DishesPictureSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
+        """
+        https://www.django-rest-framework.org/api-guide/serializers/#saving-instances
+        :param validated_data:
+        :return:
+        """
         picture = DishPicture.objects.create(**validated_data)
         return picture
 

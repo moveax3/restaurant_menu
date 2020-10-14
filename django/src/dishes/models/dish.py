@@ -49,6 +49,12 @@ class Dish(TimeStampedModel):
         return self.name
 
     def save(self, *args, **kwargs):
+        """
+        Override save method for creating new Pastebin paste after save
+        :param args:
+        :param kwargs:
+        :return:
+        """
         super().save(*args, **kwargs)
         post_paste.delay(
             paste_name=datetime.datetime.now(),

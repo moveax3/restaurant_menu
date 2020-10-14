@@ -9,6 +9,11 @@ def debug_context(request):
 
 
 def api_context(request):
+    """
+    API params context like static token and API endpoints
+    :param request:
+    :return:
+    """
     return {
         'API_TOKEN': settings.DRF_STATIC_TOKEN,
         'API_URLS': {
@@ -18,6 +23,11 @@ def api_context(request):
 
 
 def urls_context(request):
+    """
+    Urls endpoints context like pages or external urls
+    :param request:
+    :return:
+    """
     return {
         'URLS': {
             'summary': reverse('dishes:dishes_summary'),

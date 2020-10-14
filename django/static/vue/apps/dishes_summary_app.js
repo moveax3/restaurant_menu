@@ -38,6 +38,10 @@ app = new Vue({
     },
     template: DishesSummaryTemplate,
     methods: {
+        /**
+         * Calculate price of all checked dishes
+         * @returns {number}
+         */
         total_price: function () {
             var price = 0;
             for (dish of this.dishes) {
@@ -48,6 +52,7 @@ app = new Vue({
     },
     mounted: function () {
         var that = this;
+        // Get checked dishes from cookie and make dished ids string for API request
         var checked_dishes = $cookies.get('checked_dishes');
         var dishes_ids = "";
         for (dish_id of Object.keys(checked_dishes)) {
@@ -55,10 +60,12 @@ app = new Vue({
                 dishes_ids += `${dish_id},`;
             }
         }
+        // Make API request with dishes ids GET param
         axios.get(`${API_URLS.dishes}?dishes=${dishes_ids}`)
             .then((response) => {
                 that.dishes = response.data;
                 that.allergens = [];
+                // Collect allergens from all checked dishes
                 for (dish of that.dishes) {
                     for (allergen of dish.allergens) {
                         if (!that.allergens.includes(allergen.name)) {

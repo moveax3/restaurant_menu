@@ -9,6 +9,7 @@ from .models import PastebinPaste
 @shared_task
 def post_paste(paste_name: str, paste_text: str):
     """
+    Make new paste in pastebin.com and save paste url to PastebinPaste model.
     https://pastebin.com/doc_api
     :param paste_name:
     :param paste_text:

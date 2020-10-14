@@ -57,6 +57,11 @@ app = new Vue({
     },
     template: DishesMenuTemplate,
     methods: {
+        /**
+         * Prepare allergens string for dish object
+         * @param dish
+         * @returns {string}
+         */
         get_allergens_string: function (dish) {
             var allergens = [];
             for (allergen of dish.allergens) {
@@ -64,20 +69,33 @@ app = new Vue({
             }
             return allergens.join(', ');
         },
+        /**
+         * Save checked dishes to cookie
+         */
         save_checked_dishes: function () {
             $cookies.set('checked_dishes', JSON.stringify(this.checked_dishes));
         },
+        /**
+         * Summary page url
+         * @returns {string}
+         */
         summary_url: function () {
             return URLS.summary;
         },
+        /**
+         * Last PasteBin paste url
+         * @returns {string}
+         */
         pastebin_url: function () {
             return URLS.pastebin;
         },
     },
     mounted: function () {
         var that = this;
+        // Make api request to getting all dishes
         axios.get(API_URLS.dishes)
             .then((response) => {
+                // Mapping dishes by categories
                 var categoried_dishes = {};
                 response.data.map(function(dish){
                     if (categoried_dishes[dish.category.id] == undefined){
@@ -87,7 +105,7 @@ app = new Vue({
                     that.checked_dishes[dish.id] = false;
                 });
                 that.categoried_dishes = categoried_dishes;
-                that.save_checked_dishes();
+                that.save_checked_dishes(); // Save checked dished to cookie
             });
     },
 });
