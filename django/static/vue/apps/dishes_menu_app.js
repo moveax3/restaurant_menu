@@ -36,7 +36,7 @@ const DishesMenuTemplate = `
                     Выбрать
                 </b-form-checkbox>
                 <img
-                    :src="dish.picture.picture"
+                    :src="get_dish_picture_url(dish)"
                     class="mw-100 mh-300"
                 />
             </div>
@@ -57,6 +57,16 @@ app = new Vue({
     },
     template: DishesMenuTemplate,
     methods: {
+        /**
+         * Prepare dish picture url
+         */
+        get_dish_picture_url: function (dish) {
+            if (dish.picture) {
+                return dish.picture.picture;
+            } else {
+                return "https://www.python.org/static/community_logos/python-powered-h-50x65.png";
+            }
+        },
         /**
          * Prepare allergens string for dish object
          * @param dish
