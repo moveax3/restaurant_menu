@@ -29,7 +29,16 @@ class DishesViewSet(ModelViewSet):
             return DishesCreateSerializer
 
     def list(self, request):
-        serializer = self.get_serializer_class()(self.get_queryset(), many=True)
+
+        try:
+            dishes_ids = [int(dish_id) for dish_id in request.GET.get('dishes', '').split(',') if dish_id]
+        except ValueError:
+            dishes_ids = []
+        queryset = self.get_queryset()
+        if dishes_ids:
+            queryset = queryset.filter(id__in=dishes_ids)
+
+        serializer = self.get_serializer_class()(queryset, many=True)
         return Response(serializer.data)
 
     def create(self, request):
