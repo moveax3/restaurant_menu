@@ -6,5 +6,7 @@ djangorestframework
 markdown
 psycopg2-binary
 Pillow
+pytest-django
 redis
+requests
 uwsgi
