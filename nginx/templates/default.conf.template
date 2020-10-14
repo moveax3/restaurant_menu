@@ -4,7 +4,7 @@ upstream django_app {
 
 server {
     listen 80;
-    server_name ${HOST};
+    server_name ${HOSTNAME};
     charset     utf-8;
     client_max_body_size 16M;
 
