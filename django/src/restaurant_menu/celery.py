@@ -1,11 +1,12 @@
 from celery import Celery
+from django.conf import settings
 
-# noinspection PyTypeChecker
-app = Celery('restaurant_menu')
-app.config_from_object('django.conf:settings', namespace='CELERY')
-app.autodiscover_tasks()
+app = Celery(
+    'restaurant_menu',
+    broker=settings.CELERY_BROKER_URL,
+    backend=settings.CELERY_RESULT_BACKEND,
+    include=['pastebin.tasks',]
+)
 
-
-@app.task(bind=True)
-def debug_task(self):
-    print('Request: {0!r}'.format(self.request))
+if __name__ == '__main__':
+    app.start()
