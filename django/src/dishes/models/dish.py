@@ -2,6 +2,7 @@ import datetime
 import json
 
 from django.db import models
+from django.core import serializers
 from model_utils.models import TimeStampedModel
 
 from .category import Category
@@ -12,8 +13,7 @@ from pastebin.tasks import post_paste
 
 class DishManager(models.Manager):
     def get_json_descriptions(self) -> str:
-        dishes: list = list(self.all().values('name', 'price'))
-        return json.dumps(dishes, ensure_ascii=False)
+        return serializers.serialize("json", self.all().values('name', 'price'))
 
 
 class Dish(TimeStampedModel):
