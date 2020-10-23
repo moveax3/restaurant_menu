@@ -19,7 +19,14 @@ class DishesViewSet(ModelViewSet):
         https://www.django-rest-framework.org/api-guide/generic-views/#get_querysetself
         :return:
         """
-        return Dish.objects.all().select_related(
+
+        queryset = Dish.objects.all()
+
+        dishes_ids = self.request.GET.getlist('dishes')
+        if dishes_ids:
+            queryset = queryset.filter(id__in=dishes_ids)
+
+        return queryset.select_related(
             'category',
             'nutritional_value',
         ).prefetch_related(
@@ -39,20 +46,10 @@ class DishesViewSet(ModelViewSet):
     def list(self, request):
         """
         https://www.django-rest-framework.org/api-guide/viewsets/#viewset-actions
-        :param request:
+        :param request
         :return:
         """
-        try:
-            # Can accept list of dishes ids as get params
-            # for example: url?dishes=1,2,3,4
-            dishes_ids = [int(dish_id) for dish_id in request.GET.get('dishes', '').split(',') if dish_id]
-        except ValueError:
-            # or just get all dishes by default
-            dishes_ids = []
         queryset = self.get_queryset()
-        if dishes_ids:
-            queryset = queryset.filter(id__in=dishes_ids)
-
         serializer = self.get_serializer_class()(queryset, many=True)
         return Response(serializer.data)
 
